@@ -1,0 +1,111 @@
+/* RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./assets/istockphoto-1424869778-612x612.jpg'),
+                      linear-gradient(rgba(63, 60, 60, 0.125) 10%, rgba(255, 255, 255, 0.5) 100%);
+    background-color: #eef2f74e;
+    background-size: 100vw 50vw;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+/* BIGGER SIGNUP CONTAINER */
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    width: 120%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.777);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    margin: 1rem;
+    text-align: center;
+}
+
+/* BIGGER INPUT FIELDS */
+.username-input,
+.email-input,
+.password-input {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0px 4px 5px rgba(121, 197, 239, 0.2);
+    height: 3.5rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1.2rem;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s ease;
+}
+
+.username-input:focus,
+.email-input:focus,
+.password-input:focus {
+    outline: none;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* BIGGER SIGNUP BUTTON */
+.signup-button {
+    background-color: #45b6f3;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    width: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.signup-button:hover {
+    background-color: #1e90ff;
+    transform: scale(1.05);
+}
+
+/* RESPONSIVE MEDIA QUERIES */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+        padding: 1rem;
+        background-size: cover;
+    }
+
+    .signup-container {
+        padding: 2rem 1.5rem;
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .signup-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .signup-button {
+        font-size: 1rem;
+        padding: 0.9rem;
+    }
+
+    .username-input,
+    .email-input,
+    .password-input {
+        font-size: 1rem;
+        padding: 0.8rem;
+        height: 3rem;
+    }
+}
