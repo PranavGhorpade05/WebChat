@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import './signup.css';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { useNavigate } from "react-router-dom";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -22,13 +23,21 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    
 
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log("User signed up:", userCredential.user);
-            alert("Signup successful!");
+            // Set displayName (name) for the user
+            await updateProfile(userCredential.user, { displayName: username });
+            // Store email and password in localStorage
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPassword', password);
+            // Send displayName (username) to home
+            navigate("/home", { state: { displayName: username } });
         } catch (err) {
             console.error("Error signing up:", err.message);
             setError(err.message);
@@ -37,11 +46,11 @@ const Signup = () => {
 
     return (
         <div className="signup-container">
-            <h2>Signup</h2>
+            <h2 className="signup-title">Signup</h2>
             <form className="signup-form" onSubmit={handleSignup}>
                 <div className="form-group">
                     <input
-                        className="username-input"
+                        className="input-field"
                         type="text"
                         id="username"
                         name="username"
@@ -53,7 +62,7 @@ const Signup = () => {
                 </div>
                 <div className="form-group">
                     <input
-                        className="email-input"
+                        className="input-field"
                         type="email"
                         id="email"
                         name="email"
@@ -64,18 +73,21 @@ const Signup = () => {
                 </div>
                 <div className="form-group">
                     <input
-                        className="password-input"
+                        className="input-field"
                         type="password"
                         id="password"
                         name="password"
                         onChange={(e) => setPassword(e.target.value)}
-
                         placeholder="Enter your password"
                         required
                     />
                 </div>
                 <button type="submit" className="signup-button">Signup</button>
             </form>
+            <div style={{ marginTop: '1.5rem' }}>
+                <span>Already have an account? </span>
+                <a href="/" style={{ color: '#45b6f3', fontWeight: 600, textDecoration: 'underline', marginLeft: 4 }}>Login</a>
+            </div>
         </div>
     );
 };

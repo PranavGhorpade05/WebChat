@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './login.css';
-// import { auth } from "./firebase"; 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { Link ,useNavigate} from "react-router-dom";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyAk010uXVXNepp1n7w4chzfgaYz5Cjk5rA",
@@ -13,7 +14,6 @@ const firebaseConfig = {
     appId:  "1:930289158859:web:d17a3e07e6fcf6ec1ce94e"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -21,15 +21,26 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedEmail = localStorage.getItem('userEmail');
+        const storedPassword = localStorage.getItem('userPassword');
+        if (storedEmail && storedPassword) {
+            navigate("/home", { state: { email: storedEmail } });
+        }
+    }, [navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log("User logged in:", userCredential.user);
-            setError("");
-            alert("Login successful!");
-            // Optionally, redirect or update state here
+            // Store email and password in localStorage
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPassword', password);
+            // Send displayName (username) to home
+            const displayName = userCredential.user.displayName || email;
+            navigate("/home", { state: { displayName } });
         } catch (error) {
             console.error("Error logging in:", error.message);
             setError(error.message);
@@ -65,8 +76,12 @@ const Login = () => {
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="login-button">Login</button>
+                <button type="submit" className="login-button" >Login</button>
             </form>
+            <div style={{ marginTop: '1.5rem' }}>
+                <span>Don't have an account? </span>
+                <Link to="/signup" style={{ color: '#6366f1', fontWeight: 600, textDecoration: 'underline', marginLeft: 4 }}>Sign up</Link>
+            </div>
         </div>
     );
 };
